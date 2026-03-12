@@ -118,8 +118,16 @@ body {
           🌿 同じアイテム同士がくっつくと大きく育って実になるよ<br>
           👆 <b>長押しして指をずらすと向きが変わるよ。離すと発射！</b>
         </div>
-        <button class="btn btn-easy" onclick="startGame('easy')" style="font-size:16px;padding:13px 0;width:100%;">🌿 イージーではじめる</button>
-        <button class="btn btn-hard" onclick="startGame('hard')" style="font-size:16px;padding:13px 0;width:100%;">🐛 ハードではじめる</button>
+        <div style="font-size:10px;color:rgba(255,255,255,0.85);letter-spacing:1px;font-weight:bold;text-shadow:0 1px 4px rgba(0,0,0,0.4);width:100%;text-align:center;">── ノーマルモード ──</div>
+        <div style="display:flex;gap:8px;width:100%;">
+          <button class="btn btn-easy" onclick="startGame('easy')" style="font-size:14px;padding:12px 0;flex:1;">🌿 イージー</button>
+          <button class="btn btn-hard" onclick="startGame('hard')" style="font-size:14px;padding:12px 0;flex:1;">🐛 ハード</button>
+        </div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.85);letter-spacing:1px;font-weight:bold;text-shadow:0 1px 4px rgba(0,0,0,0.4);width:100%;text-align:center;">── エンドレスモード ──</div>
+        <div style="display:flex;gap:8px;width:100%;">
+          <button class="btn" onclick="startGame('endless_easy')" style="font-size:14px;padding:12px 0;flex:1;background:#26A69A;color:#fff;box-shadow:0 3px 0 #00796B;">♾️ イージー</button>
+          <button class="btn" onclick="startGame('endless_hard')" style="font-size:14px;padding:12px 0;flex:1;background:#7B1FA2;color:#fff;box-shadow:0 3px 0 #4A148C;">♾️ ハード</button>
+        </div>
       </div>
     </div>
   </div>
@@ -345,6 +353,8 @@ var STAGES_HARD = [
   { t:'Stage 7', h:'全６種類！🐛🐛🐛',            m:[{fi:0,n:1},{fi:1,n:1},{fi:2,n:1},{fi:3,n:1},{fi:4,n:1},{fi:5,n:1}] }
 ];
 var gameMode = 'easy';
+var endlessMode = false;
+var endlessHard = false;
 var STAGES = STAGES_EASY;
 
 var shootBag = [];
@@ -452,7 +462,8 @@ function initStage() {
   }
   curLvl = popSeq(); nxtLvl = popSeq();
 
-  document.getElementById('stageLabel').textContent = s.t.toUpperCase();
+  var modeTag = endlessMode ? ' ♾️' : '';
+  document.getElementById('stageLabel').textContent = s.t.toUpperCase() + modeTag;
   document.getElementById('sc').textContent = totalSc;
   document.getElementById('clrOv').classList.remove('show');
   document.getElementById('goOv').classList.remove('show');
@@ -476,17 +487,63 @@ function initStage() {
   });
 }
 
+// エンドレスモード用ステージ自動生成
+function generateEndlessStage(idx, isHard) {
+  var fi = FRUITS;
+  // 難易度に応じてミッション構成を変える
+  var missions = [];
+  if (idx < 3) {
+    missions = [{fi:0, n:1}];
+  } else if (idx < 6) {
+    missions = [{fi: idx%6, n: Math.min(2, 1 + Math.floor(idx/4))}];
+  } else if (idx < 10) {
+    missions = [{fi: idx%6, n:2}, {fi:(idx+2)%6, n:1}];
+  } else if (idx < 15) {
+    missions = [{fi: idx%6, n:2}, {fi:(idx+2)%6, n:2}];
+  } else {
+    var count = Math.min(6, 2 + Math.floor((idx-10)/5));
+    missions = [];
+    for (var i = 0; i < count; i++) missions.push({fi:i, n: Math.min(3, 1+Math.floor(idx/10))});
+  }
+  var bugStr = '';
+  if (isHard) {
+    var bugs = Math.min(4, Math.floor(idx/3)+1);
+    for (var b=0;b<bugs;b++) bugStr += '🐛';
+  }
+  return {
+    t: 'Stage ' + (idx+1),
+    h: (idx < 3 ? '実を作ろう！' : idx < 8 ? 'コンボを狙え！' : idx < 15 ? '難しくなってきた！' : '上級者向け！') + (bugStr ? ' ' + bugStr : ''),
+    m: missions,
+    endless: true
+  };
+}
+
 window.startGame = function(mode) {
   gameMode = mode;
-  STAGES = mode === 'hard' ? STAGES_HARD : STAGES_EASY;
+  var isEndless = mode === 'endless_easy' || mode === 'endless_hard';
+  var isHard = mode === 'hard' || mode === 'endless_hard';
+  endlessMode = isEndless;
+  endlessHard = isHard;
+  STAGES = isHard ? STAGES_HARD : STAGES_EASY;
   totalSc = 0; stageIdx = 0;
   document.getElementById('titleOv').classList.remove('show');
   document.getElementById('hint').style.visibility = 'visible';
   document.getElementById('topUI').style.display = 'flex';
   initStage();
 };
-window.restartAll   = function() { totalSc = 0; stageIdx = 0; hideAllOv(); document.getElementById('hint').style.visibility = 'visible'; initStage(); };
-window.nextStage    = function() { stageIdx = Math.min(stageIdx+1, STAGES.length-1); hideAllOv(); document.getElementById('hint').style.visibility = 'visible'; initStage(); };
+window.restartAll   = function() { totalSc = 0; stageIdx = 0; if(endlessMode){ STAGES = endlessHard ? STAGES_HARD.slice() : STAGES_EASY.slice(); } hideAllOv(); document.getElementById('hint').style.visibility = 'visible'; initStage(); };
+window.nextStage    = function() {
+  stageIdx++;
+  if (endlessMode) {
+    // エンドレス：定義済みステージを超えたら自動生成
+    if (stageIdx >= STAGES.length) {
+      STAGES = STAGES.concat([generateEndlessStage(stageIdx, endlessHard)]);
+    }
+  } else {
+    stageIdx = Math.min(stageIdx, STAGES.length-1);
+  }
+  hideAllOv(); document.getElementById('hint').style.visibility = 'visible'; initStage();
+};
 window.continueStage = function() { hideAllOv(); document.getElementById('hint').style.visibility = 'visible'; initStage(); };
 window.goTitle = function() {
   hideAllOv();
