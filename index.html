@@ -121,7 +121,7 @@ body {
         <div style="font-size:10px;color:rgba(255,255,255,0.85);letter-spacing:1px;font-weight:bold;text-shadow:0 1px 4px rgba(0,0,0,0.4);width:100%;text-align:center;">── ノーマルモード ──</div>
         <div style="display:flex;gap:8px;width:100%;">
           <button class="btn btn-easy" onclick="startGame('easy')" style="font-size:14px;padding:12px 0;flex:1;">🌿 イージー</button>
-          <button class="btn btn-hard" onclick="startGame('hard')" style="font-size:14px;padding:12px 0;flex:1;">🐛 ハード</button>
+          <button class="btn btn-hard" onclick="startGame('hard')" style="font-size:14px;padding:12px 0;flex:1;">🐞 ハード</button>
         </div>
         <div style="font-size:10px;color:rgba(255,255,255,0.85);letter-spacing:1px;font-weight:bold;text-shadow:0 1px 4px rgba(0,0,0,0.4);width:100%;text-align:center;">── エンドレスモード ──</div>
         <div style="display:flex;gap:8px;width:100%;">
@@ -344,13 +344,13 @@ var STAGES_EASY = [
   { t:'Stage 8', h:'全６種類の実を作ろう！',      m:[{fi:0,n:1},{fi:1,n:1},{fi:2,n:1},{fi:3,n:1},{fi:4,n:1},{fi:5,n:1}] }
 ];
 var STAGES_HARD = [
-  { t:'Stage 1', h:'赤い実を１つ！🐛虫に注意',    m:[{fi:0,n:1}] },
-  { t:'Stage 2', h:'赤・橙を各１つ！🐛',          m:[{fi:0,n:1},{fi:1,n:1}] },
-  { t:'Stage 3', h:'黄の実を２つ！🐛',            m:[{fi:2,n:2}] },
-  { t:'Stage 4', h:'赤・橙・黄 各１つ！🐛',       m:[{fi:0,n:1},{fi:1,n:1},{fi:2,n:1}] },
-  { t:'Stage 5', h:'なんでも実を４つ！🐛🐛',      m:[{fi:-1,n:4}] },
-  { t:'Stage 6', h:'赤・橙・黄 各２つ！🐛🐛',    m:[{fi:0,n:2},{fi:1,n:2},{fi:2,n:2}] },
-  { t:'Stage 7', h:'全６種類！🐛🐛🐛',            m:[{fi:0,n:1},{fi:1,n:1},{fi:2,n:1},{fi:3,n:1},{fi:4,n:1},{fi:5,n:1}] }
+  { t:'Stage 1', h:'赤い実を１つ！🐞てんとう虫に注意',    m:[{fi:0,n:1}] },
+  { t:'Stage 2', h:'赤・橙を各１つ！🐞',          m:[{fi:0,n:1},{fi:1,n:1}] },
+  { t:'Stage 3', h:'黄の実を２つ！🐞',            m:[{fi:2,n:2}] },
+  { t:'Stage 4', h:'赤・橙・黄 各１つ！🐞',       m:[{fi:0,n:1},{fi:1,n:1},{fi:2,n:1}] },
+  { t:'Stage 5', h:'なんでも実を４つ！🐞🐞',      m:[{fi:-1,n:4}] },
+  { t:'Stage 6', h:'赤・橙・黄 各２つ！🐞🐞',    m:[{fi:0,n:2},{fi:1,n:2},{fi:2,n:2}] },
+  { t:'Stage 7', h:'全６種類！🐞🐞🐞',            m:[{fi:0,n:1},{fi:1,n:1},{fi:2,n:1},{fi:3,n:1},{fi:4,n:1},{fi:5,n:1}] }
 ];
 var gameMode = 'easy';
 var endlessMode = false;
@@ -508,7 +508,7 @@ function generateEndlessStage(idx, isHard) {
   var bugStr = '';
   if (isHard) {
     var bugs = Math.min(4, Math.floor(idx/3)+1);
-    for (var b=0;b<bugs;b++) bugStr += '🐛';
+    for (var b=0;b<bugs;b++) bugStr += '🐞';
   }
   return {
     t: 'Stage ' + (idx+1),
@@ -1258,8 +1258,8 @@ function update() {
   // ── おじゃま虫（ハードモードのみ）──
   if (gameMode === 'hard' && !dead && !won) {
     bugTimer++;
-    // 出現間隔: stage1=3分(10800f), stage7=2分(7200f)、ランダム±20%
-    var spawnInterval = Math.max(7200, 10800 - stageIdx * 480);
+    // 出現間隔: stage1=60秒(3600f), stage7=30秒(1800f)、ランダム±20%
+    var spawnInterval = Math.max(1800, 3600 - stageIdx * 257);
     spawnInterval = spawnInterval * (0.8 + Math.random() * 0.4);
     if (bugTimer >= spawnInterval && objs.length > 0) {
       bugTimer = 0;
