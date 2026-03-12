@@ -51,6 +51,7 @@ body {
 .btn-r { background:linear-gradient(135deg,#ef5350,#ff7043); color:#fff; box-shadow:0 3px 0 #b71c1c; }
 .btn-b { background:linear-gradient(135deg,#78909c,#b0bec5); color:#1a1a2e; box-shadow:0 3px 0 #37474f; }
 #hint { font-size:10px; color:#5D4037; margin-top:3px; text-align:center; opacity:0.7; }
+.footer-cr { font-size:10px; color:rgba(0,0,0,0.3); text-align:center; margin-top:2px; letter-spacing:1px; }
 #rankOv { background:rgba(255,248,220,0.97); }
 #titleOv { background:linear-gradient(160deg,#e8f5e9,#b2ebf2); z-index:40; overflow-y:auto; justify-content:flex-start; padding:20px 12px 20px; }
 .title-logo {
@@ -118,6 +119,7 @@ body {
           🌿 同じアイテム同士がくっつくと大きく育って実になるよ<br>
           👆 <b>長押しして指をずらすと向きが変わるよ。離すと発射！</b>
         </div>
+        <button id="seToggleBtn" onclick="toggleSE()" style="padding:7px 20px;font-family:inherit;font-size:13px;border:none;border-radius:16px;cursor:pointer;font-weight:bold;background:rgba(255,255,255,0.85);color:#2E7D32;width:100%;">🔊 効果音：ON</button>
         <div style="font-size:10px;color:rgba(255,255,255,0.85);letter-spacing:1px;font-weight:bold;text-shadow:0 1px 4px rgba(0,0,0,0.4);width:100%;text-align:center;">── ノーマルモード ──</div>
         <div style="display:flex;gap:8px;width:100%;">
           <button class="btn btn-easy" onclick="startGame('easy')" style="font-size:14px;padding:12px 0;flex:1;">🌿 イージー</button>
@@ -128,6 +130,7 @@ body {
           <button class="btn" onclick="startGame('endless_easy')" style="font-size:14px;padding:12px 0;flex:1;background:#26A69A;color:#fff;box-shadow:0 3px 0 #00796B;">♾️ イージー</button>
           <button class="btn" onclick="startGame('endless_hard')" style="font-size:14px;padding:12px 0;flex:1;background:#7B1FA2;color:#fff;box-shadow:0 3px 0 #4A148C;">♾️ ハード</button>
         </div>
+      <div style="font-size:10px;color:rgba(255,255,255,0.45);text-align:center;letter-spacing:1px;">© #87</div>
       </div>
     </div>
   </div>
@@ -138,6 +141,7 @@ body {
     <button class="btn btn-g" onclick="continueStage()" style="margin-bottom:4px;background:linear-gradient(135deg,#29b6f6,#81d4fa);box-shadow:0 3px 0 #0277bd;">もう一度このステージ &#128260;</button>
     <button class="btn btn-b" onclick="showRanking()">&#127942; ランキングを見てやめる</button>
     <button class="btn" onclick="goTitle()" style="background:rgba(255,255,255,0.6);color:#555;box-shadow:none;font-size:13px;margin-top:4px;">&#8592; タイトルへ戻る</button>
+  <div class="footer-cr">© #87</div>
   </div>
   <div class="ov" id="goOv">
     <div class="ov-tg">&#128128; ゲームオーバー</div>
@@ -146,6 +150,7 @@ body {
     <button class="btn btn-r" onclick="restartAll()" style="margin-bottom:4px;">&#9654; ステージ１からやり直す</button>
     <button class="btn btn-b" onclick="showRanking()">&#127942; ランキングを見てやめる</button>
     <button class="btn" onclick="goTitle()" style="background:rgba(255,255,255,0.6);color:#555;box-shadow:none;font-size:13px;margin-top:4px;">&#8592; タイトルへ戻る</button>
+  <div class="footer-cr">© #87</div>
   </div>
   <div class="ov" id="rankOv">
     <div class="rank-title">&#127942; ハイスコアランキング</div>
@@ -157,6 +162,7 @@ body {
     <button class="btn" onclick="goTitle()" style="background:rgba(255,255,255,0.6);color:#555;box-shadow:none;font-size:13px;">&#8592; タイトルへ戻る</button>
   </div>
 </div>
+<div class="footer-cr" id="crGame" style="display:none;">© #87</div>
 <div id="gameButtons" style="display:none; margin-top:4px; width:100%; max-width:335px; gap:8px;">
   <button onclick="togglePause()" id="pauseBtn" style="flex:1; padding:8px 0; font-family:inherit; font-size:13px; border:none; border-radius:18px; cursor:pointer; font-weight:bold; background:#78909C; color:#fff; box-shadow:0 3px 0 #37474F;">⏸ 一時停止</button>
   <button onclick="goTitle()" style="flex:1; padding:8px 0; font-family:inherit; font-size:13px; border:none; border-radius:18px; cursor:pointer; font-weight:bold; background:#A5D6A7; color:#1B5E20; box-shadow:0 3px 0 #388E3C;">🏠 タイトルへ</button>
@@ -533,10 +539,12 @@ window.startGame = function(mode) {
   totalSc = 0; stageIdx = 0;
   document.getElementById('titleOv').classList.remove('show');
   document.getElementById('gameButtons').style.display = 'flex';
+  document.getElementById('crGame').style.display = 'block';
   document.getElementById('topUI').style.display = 'flex';
   initStage();
 };
-window.restartAll   = function() { totalSc = 0; stageIdx = 0; if(endlessMode){ STAGES = endlessHard ? STAGES_HARD.slice() : STAGES_EASY.slice(); } hideAllOv(); document.getElementById('gameButtons').style.display = 'flex'; initStage(); };
+window.restartAll   = function() { totalSc = 0; stageIdx = 0; if(endlessMode){ STAGES = endlessHard ? STAGES_HARD.slice() : STAGES_EASY.slice(); } hideAllOv(); document.getElementById('gameButtons').style.display = 'flex';
+  document.getElementById('crGame').style.display = 'block'; initStage(); };
 window.nextStage    = function() {
   stageIdx++;
   if (endlessMode) {
@@ -547,9 +555,116 @@ window.nextStage    = function() {
   } else {
     stageIdx = Math.min(stageIdx, STAGES.length-1);
   }
-  hideAllOv(); document.getElementById('gameButtons').style.display = 'flex'; initStage();
+  hideAllOv(); document.getElementById('gameButtons').style.display = 'flex';
+  document.getElementById('crGame').style.display = 'block'; initStage();
 };
-window.continueStage = function() { hideAllOv(); document.getElementById('gameButtons').style.display = 'flex'; initStage(); };
+window.continueStage = function() { hideAllOv(); document.getElementById('gameButtons').style.display = 'flex';
+  document.getElementById('crGame').style.display = 'block'; initStage(); };
+
+// ======================================================
+// SOUND EFFECTS (Web Audio API)
+// ======================================================
+var audioCtx = null;
+var seEnabled = true;
+
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function playShoot() {
+  if (!seEnabled) return;
+  var ctx = getAudioCtx();
+  var osc = ctx.createOscillator();
+  var gain = ctx.createGain();
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(520, ctx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(180, ctx.currentTime + 0.18);
+  gain.gain.setValueAtTime(0.18, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.18);
+  osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.18);
+}
+
+function playEvolve() {
+  if (!seEnabled) return;
+  var ctx = getAudioCtx();
+  [0, 0.06, 0.12].forEach(function(t, i) {
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type = 'sine';
+    var freq = [320, 480, 640][i];
+    osc.frequency.setValueAtTime(freq, ctx.currentTime + t);
+    osc.frequency.exponentialRampToValueAtTime(freq * 1.5, ctx.currentTime + t + 0.12);
+    gain.gain.setValueAtTime(0.12, ctx.currentTime + t);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + 0.18);
+    osc.start(ctx.currentTime + t); osc.stop(ctx.currentTime + t + 0.2);
+  });
+}
+
+function playFruit() {
+  if (!seEnabled) return;
+  var ctx = getAudioCtx();
+  var notes = [523, 659, 784, 1047];
+  notes.forEach(function(freq, i) {
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.08);
+    gain.gain.setValueAtTime(0.15, ctx.currentTime + i * 0.08);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.08 + 0.3);
+    osc.start(ctx.currentTime + i * 0.08);
+    osc.stop(ctx.currentTime + i * 0.08 + 0.32);
+  });
+}
+
+function playBug() {
+  if (!seEnabled) return;
+  var ctx = getAudioCtx();
+  var buf = ctx.createBuffer(1, ctx.sampleRate * 0.18, ctx.sampleRate);
+  var data = buf.getChannelData(0);
+  for (var i = 0; i < data.length; i++) {
+    data[i] = (Math.random() * 2 - 1) * (1 - i / data.length) * 0.6;
+  }
+  var src = ctx.createBufferSource();
+  var gain = ctx.createGain();
+  var filter = ctx.createBiquadFilter();
+  filter.type = 'bandpass'; filter.frequency.value = 400; filter.Q.value = 1.5;
+  src.buffer = buf;
+  src.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+  gain.gain.setValueAtTime(0.5, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.18);
+  src.start(ctx.currentTime); src.stop(ctx.currentTime + 0.2);
+}
+
+function playClear() {
+  if (!seEnabled) return;
+  var ctx = getAudioCtx();
+  var melody = [
+    {f:523, t:0},    {f:659, t:0.12}, {f:784, t:0.24},
+    {f:1047,t:0.36}, {f:784, t:0.50}, {f:1047,t:0.60}
+  ];
+  melody.forEach(function(n) {
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(n.f, ctx.currentTime + n.t);
+    gain.gain.setValueAtTime(0.1, ctx.currentTime + n.t);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + n.t + 0.22);
+    osc.start(ctx.currentTime + n.t);
+    osc.stop(ctx.currentTime + n.t + 0.24);
+  });
+}
+
+window.toggleSE = function() {
+  seEnabled = !seEnabled;
+  var btn = document.getElementById('seToggleBtn');
+  if (btn) btn.textContent = seEnabled ? '🔊 効果音：ON' : '🔇 効果音：OFF';
+};
+
 var paused = false;
 window.togglePause = function() {
   if (dead || won) return;
@@ -572,6 +687,7 @@ window.goTitle = function() {
   if (eng) { try { Matter.World.clear(world, false); Matter.Engine.clear(eng); } catch(e){} eng = null; }
   document.getElementById('topUI').style.display = 'none';
   document.getElementById('gameButtons').style.display = 'none';
+  document.getElementById('crGame').style.display = 'none';
   document.getElementById('titleOv').classList.add('show');
   drawTitleIllustration(); // 再描画
 };
@@ -615,6 +731,7 @@ window.showRanking = function() {
   hideAllOv();
   document.getElementById('rankOv').classList.add('show');
   document.getElementById('gameButtons').style.display = 'none';
+  document.getElementById('crGame').style.display = 'none';
 };
 window.clearRanking = function() {
   if (confirm('記録を全て消しますか？')) {
@@ -653,6 +770,7 @@ function shoot() {
     restitution:0.05, friction:0.4, frictionAir:0.022, density:0.003, label:'b'
   });
   Bo.setVelocity(b, { x: Math.cos(aim)*10, y: Math.sin(aim)*10 });
+  playShoot();
   Wo.add(world, b);
   bullet = { body:b, lvl:curLvl, fi:null, born:frame };
   curLvl = nxtLvl; nxtLvl = popSeq();
@@ -718,6 +836,7 @@ function procMQ() {
       var fi = (a.fi !== null) ? a.fi : 0;
       var matches = missionNeeds(fi);
       spawnFruitDisplay(mx, my, fi, matches);
+      playFruit();
       addPts(mx, my,
         matches ? 300 + stageIdx*100 : 500 + stageIdx*150,
         matches ? '#E65100' : '#9C27B0'
@@ -725,6 +844,7 @@ function procMQ() {
       birdJoy = 240; // 約4秒間お祝い
     } else {
       burstGrow(mx, my, nl);
+      playEvolve();
       addPts(mx, my, [0,5,10,20,40,80,160][nl] || 0, '#4CAF50');
       var nr = ITEMS[nl].r;
       var nb = Bd.circle(
@@ -821,6 +941,7 @@ function triggerGO() {
   setTimeout(function() {
     document.getElementById('goOv').classList.add('show');
     document.getElementById('gameButtons').style.display = 'none';
+  document.getElementById('crGame').style.display = 'none';
   }, 500);
 }
 
@@ -1281,7 +1402,7 @@ function update() {
   if (gameMode === 'hard' && !dead && !won) {
     bugTimer++;
     // 出現間隔: stage1=60秒(3600f), stage7=30秒(1800f)、ランダム±20%
-    var spawnInterval = Math.max(1800, 3600 - stageIdx * 257);
+    var spawnInterval = Math.max(900, 2400 - stageIdx * 200);
     spawnInterval = spawnInterval * (0.8 + Math.random() * 0.4);
     if (bugTimer >= spawnInterval && objs.length > 0) {
       bugTimer = 0;
@@ -1311,6 +1432,7 @@ function update() {
         bug.eating++;
         if (bug.eating > 60 && !bug.eaten) {
           bug.eaten = true;
+          playBug();
           // アイテムを消す
           Wo.remove(world, bug.target.body);
           objs = objs.filter(function(o){ return o !== bug.target; });
@@ -1328,9 +1450,11 @@ function update() {
   // タップ済み＆連鎖完了したら結果画面を表示
   if (clearPending && mq.length === 0 && fruitDisplays.every(function(fd){ return fd.counted; })) {
     clearPending = false;
+    playClear();
     document.getElementById('clrSc').textContent = totalSc;
     document.getElementById('clrOv').classList.add('show');
     document.getElementById('gameButtons').style.display = 'none';
+  document.getElementById('crGame').style.display = 'none';
   }
 
   // ★近接合体チェック（Matter.jsの衝突検出が漏れた場合の補完）
