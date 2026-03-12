@@ -916,24 +916,16 @@ function drawBird() {
   [-10,-4,4,10].forEach(function(tx2) {
     CTX.beginPath(); CTX.moveTo(tx2,10); CTX.lineTo(tx2+5,24); CTX.lineTo(tx2-5,24); CTX.closePath(); CTX.fill();
   });
-  var wg = CTX.createRadialGradient(-24, 0, 2, -20, 2, 16);
-  wg.addColorStop(0, '#FFE082'); wg.addColorStop(1, '#FF8F00');
-  CTX.shadowColor = 'rgba(0,0,0,0.18)'; CTX.shadowBlur = 6;
   CTX.beginPath(); CTX.ellipse(-22, 1, 14, 9, -0.3, 0, Math.PI*2);
-  CTX.fillStyle = wg; CTX.fill(); CTX.shadowBlur = 0;
-  CTX.lineWidth = 1; CTX.strokeStyle = 'rgba(255,255,255,0.3)'; CTX.stroke();
+  CTX.fillStyle = '#FFB300'; CTX.fill();
   CTX.strokeStyle = '#E65100'; CTX.lineWidth = 1.2; CTX.lineCap = 'round';
   CTX.beginPath(); CTX.moveTo(-33,1); CTX.lineTo(-36,7);  CTX.stroke();
   CTX.beginPath(); CTX.moveTo(-33,3); CTX.lineTo(-37,9);  CTX.stroke();
   CTX.beginPath(); CTX.moveTo(-32,5); CTX.lineTo(-35,11); CTX.stroke();
-  var bg = CTX.createRadialGradient(-8, -2, 4, 0, 3, 28);
-  bg.addColorStop(0, '#FFE082'); bg.addColorStop(1, '#FF8F00');
-  CTX.shadowColor = 'rgba(0,0,0,0.25)'; CTX.shadowBlur = 12;
   CTX.beginPath(); CTX.ellipse(0, 2, 26, 22, 0, 0, Math.PI*2);
-  CTX.fillStyle = bg; CTX.fill(); CTX.shadowBlur = 0;
-  CTX.lineWidth = 1.5; CTX.strokeStyle = 'rgba(255,255,255,0.35)'; CTX.stroke();
+  CTX.fillStyle = '#FFB300'; CTX.fill();
   CTX.beginPath(); CTX.ellipse(3, 7, 14, 10, 0, 0, Math.PI*2);
-  CTX.fillStyle = '#FFF9C4'; CTX.globalAlpha = 0.65; CTX.fill(); CTX.globalAlpha = 1;
+  CTX.fillStyle = '#FFE082'; CTX.fill();
   if (birdJoy > 25) {
     CTX.save(); CTX.globalAlpha = Math.min(1, (birdJoy-25)/40);
     CTX.fillStyle = '#FFF176';
@@ -947,12 +939,8 @@ function drawBird() {
   CTX.fillStyle = '#FFB300';
   CTX.beginPath();
   CTX.ellipse(HX - 4, HY + 12, 8, 10, 0.3, 0, Math.PI*2); CTX.fill();
-  var hg = CTX.createRadialGradient(HX-6, HY-6, 2, HX, HY, 20);
-  hg.addColorStop(0, '#FFFDE7'); hg.addColorStop(0.55, '#FFE082'); hg.addColorStop(1, '#FFB300');
-  CTX.shadowColor = 'rgba(0,0,0,0.22)'; CTX.shadowBlur = 8;
   CTX.beginPath(); CTX.arc(HX, HY, 20, 0, Math.PI*2);
-  CTX.fillStyle = hg; CTX.fill(); CTX.shadowBlur = 0;
-  CTX.lineWidth = 1.5; CTX.strokeStyle = 'rgba(255,255,255,0.4)'; CTX.stroke();
+  CTX.fillStyle = '#FFB300'; CTX.fill();
   CTX.strokeStyle = '#E65100'; CTX.lineWidth = 3; CTX.lineCap = 'round';
   CTX.beginPath(); CTX.moveTo(HX-2, HY-18); CTX.quadraticCurveTo(HX-8, HY-28, HX-4, HY-34); CTX.stroke();
   CTX.beginPath(); CTX.moveTo(HX+3, HY-19); CTX.quadraticCurveTo(HX+3, HY-30, HX+2, HY-36); CTX.stroke();
@@ -961,9 +949,8 @@ function drawBird() {
   CTX.beginPath(); CTX.arc(HX-4, HY-34, 3.5, 0, Math.PI*2); CTX.fill();
   CTX.beginPath(); CTX.arc(HX+2,  HY-36, 3.5, 0, Math.PI*2); CTX.fill();
   CTX.beginPath(); CTX.arc(HX+10, HY-32, 3.5, 0, Math.PI*2); CTX.fill();
-  CTX.shadowColor = 'rgba(0,0,0,0.15)'; CTX.shadowBlur = 3;
   CTX.beginPath(); CTX.ellipse(HX+6, HY-4, 8, 9, 0.15, 0, Math.PI*2);
-  CTX.fillStyle = '#fff'; CTX.fill(); CTX.shadowBlur = 0;
+  CTX.fillStyle = '#fff'; CTX.fill();
   CTX.lineWidth = 0.8; CTX.strokeStyle = '#DDD'; CTX.stroke();
   CTX.beginPath(); CTX.ellipse(HX+8, HY-5, 5.5, 6.5, 0.15, 0, Math.PI*2);
   CTX.fillStyle = '#1A237E'; CTX.fill();
@@ -980,7 +967,6 @@ function drawBird() {
   var hasItem = !bullet;
   var beakOpen = hasItem ? 6 : 2;
   CTX.fillStyle = '#FF8F00';
-  CTX.shadowColor = 'rgba(100,40,0,0.3)'; CTX.shadowBlur = 3;
   CTX.beginPath();
   CTX.moveTo(HX+16, HY-2);
   CTX.lineTo(HX+16, HY-2 - beakOpen*0.4);
