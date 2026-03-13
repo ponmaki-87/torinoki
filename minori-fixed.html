@@ -51,7 +51,8 @@ body {
 .btn-r { background:linear-gradient(135deg,#ef5350,#ff7043); color:#fff; box-shadow:0 3px 0 #b71c1c; }
 .btn-b { background:linear-gradient(135deg,#78909c,#b0bec5); color:#1a1a2e; box-shadow:0 3px 0 #37474f; }
 #hint { font-size:10px; color:#5D4037; margin-top:3px; text-align:center; opacity:0.7; }
-#rankOv { background:rgba(255,248,220,0.97); }
+.footer-cr { font-size:10px; color:rgba(0,0,0,0.25); text-align:center; letter-spacing:1px; position:fixed; bottom:4px; left:0; right:0; pointer-events:none; }
+#rankOv { background:rgba(255,248,220,0.97); overflow-y:auto; justify-content:flex-start; padding:20px 12px; gap:10px; }
 #titleOv { background:linear-gradient(160deg,#e8f5e9,#b2ebf2); z-index:40; overflow-y:auto; justify-content:flex-start; padding:20px 12px 20px; }
 .title-logo {
   display:flex; flex-direction:column; align-items:center; gap:2px;
@@ -116,20 +117,31 @@ body {
       <div style="position:absolute;bottom:20px;left:16px;right:16px;display:flex;flex-direction:column;align-items:center;gap:10px;">
         <div style="background:rgba(255,255,255,0.82);border-radius:14px;padding:10px 16px;font-size:12px;color:#3E2723;line-height:1.8;text-align:center;width:100%;">
           🌿 同じアイテム同士がくっつくと大きく育って実になるよ<br>
-          👆 <b>長押しして指をずらすと向きが変わるよ。離すと発射！</b>
+          👆 <b>タップしてゆびをうごかすとむきがかわるよ。はなすとはっしゃ！</b>
         </div>
-        <button class="btn btn-easy" onclick="startGame('easy')" style="font-size:16px;padding:13px 0;width:100%;">🌿 イージーではじめる</button>
-        <button class="btn btn-hard" onclick="startGame('hard')" style="font-size:16px;padding:13px 0;width:100%;">🐛 ハードではじめる</button>
+        <button id="seToggleBtn2" onclick="toggleSE()" style="padding:7px 10px;font-family:inherit;font-size:13px;border:none;border-radius:16px;cursor:pointer;font-weight:bold;background:rgba(255,255,255,0.85);color:#2E7D32;flex:1;">🔊 こうかおん：ON</button>
+        <button onclick="showZukan()" style="padding:7px 10px;font-family:inherit;font-size:13px;border:none;border-radius:16px;cursor:pointer;font-weight:bold;background:rgba(255,255,255,0.85);color:#1565C0;flex:1;" id="zukanBtn">📖 ずかん</button>
+        <button onclick="showLangSetting()" style="padding:7px 10px;font-family:inherit;font-size:13px;border:none;border-radius:16px;cursor:pointer;font-weight:bold;background:rgba(255,255,255,0.85);color:#555;flex:1;">⚙ 設定</button>
+        <div style="font-size:10px;color:rgba(255,255,255,0.85);letter-spacing:1px;font-weight:bold;text-shadow:0 1px 4px rgba(0,0,0,0.4);width:100%;text-align:center;">── ノーマルモード ──</div>
+        <div style="display:flex;gap:8px;width:100%;">
+          <button class="btn btn-easy" onclick="startGame('easy')" style="font-size:14px;padding:12px 0;flex:1;">🌿 イージー</button>
+          <button class="btn btn-hard" onclick="startGame('hard')" style="font-size:14px;padding:12px 0;flex:1;">🐞 ハード</button>
+        </div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.85);letter-spacing:1px;font-weight:bold;text-shadow:0 1px 4px rgba(0,0,0,0.4);width:100%;text-align:center;">── エンドレスモード ──</div>
+        <div style="display:flex;gap:8px;width:100%;">
+          <button class="btn" onclick="startGame('endless_easy')" style="font-size:14px;padding:12px 0;flex:1;background:#26A69A;color:#fff;box-shadow:0 3px 0 #00796B;">♾️ イージー</button>
+          <button class="btn" onclick="startGame('endless_hard')" style="font-size:14px;padding:12px 0;flex:1;background:#7B1FA2;color:#fff;box-shadow:0 3px 0 #4A148C;">♾️ ハード</button>
+        </div>
       </div>
     </div>
   </div>
   <div class="ov" id="clrOv">
     <div class="ov-tc">&#127800; ステージクリア！</div>
     <div class="ov-sc">スコア: <span id="clrSc">0</span></div>
-    <button class="btn btn-g" onclick="nextStage()" style="margin-bottom:4px;">次のステージへ &#127808;</button>
-    <button class="btn btn-g" onclick="continueStage()" style="margin-bottom:4px;background:linear-gradient(135deg,#29b6f6,#81d4fa);box-shadow:0 3px 0 #0277bd;">もう一度このステージ &#128260;</button>
+    <button class="btn btn-g" onclick="nextStage()" style="margin-bottom:4px;">つぎのステージへ &#127808;</button>
+    <button class="btn btn-g" onclick="continueStage()" style="margin-bottom:4px;background:linear-gradient(135deg,#29b6f6,#81d4fa);box-shadow:0 3px 0 #0277bd;">もう一どこのステージ &#128260;</button>
     <button class="btn btn-b" onclick="showRanking()">&#127942; ランキングを見てやめる</button>
-    <button class="btn" onclick="goTitle()" style="background:rgba(255,255,255,0.6);color:#555;box-shadow:none;font-size:13px;margin-top:4px;">&#8592; タイトルへ戻る</button>
+    <button class="btn" onclick="goTitle()" style="background:rgba(255,255,255,0.6);color:#555;box-shadow:none;font-size:13px;margin-top:4px;">&#8592; タイトルへもどる</button>
   </div>
   <div class="ov" id="goOv">
     <div class="ov-tg">&#128128; ゲームオーバー</div>
@@ -137,19 +149,32 @@ body {
     <button class="btn btn-g" onclick="continueStage()" style="margin-bottom:4px;">&#127807; このステージから続ける</button>
     <button class="btn btn-r" onclick="restartAll()" style="margin-bottom:4px;">&#9654; ステージ１からやり直す</button>
     <button class="btn btn-b" onclick="showRanking()">&#127942; ランキングを見てやめる</button>
-    <button class="btn" onclick="goTitle()" style="background:rgba(255,255,255,0.6);color:#555;box-shadow:none;font-size:13px;margin-top:4px;">&#8592; タイトルへ戻る</button>
+    <button class="btn" onclick="goTitle()" style="background:rgba(255,255,255,0.6);color:#555;box-shadow:none;font-size:13px;margin-top:4px;">&#8592; タイトルへもどる</button>
   </div>
+  <div class="ov" id="zukanOv" style="background:rgba(240,248,255,0.97);overflow-y:auto;justify-content:flex-start;padding:20px 12px;gap:10px;">
+    <div style="font-size:24px;font-weight:bold;color:#1565C0;">📖 ずかん・きろく</div>
+    <div id="zukanContent" style="width:100%;"></div>
+    <button class="btn" onclick="resetStats()" style="background:#eee;color:#888;box-shadow:none;font-size:12px;margin-top:4px;">🗑 きろくをリセット</button>
+    <button class="btn" onclick="hideAllOv();document.getElementById('titleOv').classList.add('show');" style="background:rgba(255,255,255,0.7);color:#555;box-shadow:none;font-size:13px;">← タイトルへもどる</button>
+    <div style="height:20px;"></div>
+  </div>
+
   <div class="ov" id="rankOv">
     <div class="rank-title">&#127942; ハイスコアランキング</div>
     <ul class="rank-list" id="rankList"></ul>
     <div style="font-size:12px;color:#888;margin-top:2px;">※このゲームの記録（端末に保存）</div>
-    <button class="btn btn-g" onclick="restartAll()" style="margin-bottom:4px;">&#9654; もう一度プレイ</button>
-    <button class="btn btn-b" onclick="quitGame()" style="margin-bottom:4px;">&#10003; 記録してゲームを終了する</button>
-    <button class="btn" onclick="clearRanking()" style="background:#eee;color:#888;box-shadow:none;font-size:13px;margin-bottom:4px;">&#128465; 記録を消す</button>
-    <button class="btn" onclick="goTitle()" style="background:rgba(255,255,255,0.6);color:#555;box-shadow:none;font-size:13px;">&#8592; タイトルへ戻る</button>
+    <button class="btn btn-g" onclick="nextStage()" id="clrNextBtn" style="margin-bottom:4px;">つぎのステージへ 🌿</button>
+    <button class="btn btn-g" onclick="restartAll()" id="goRetryBtn" style="margin-bottom:4px;">もう一どプレイ</button>
+    <button class="btn btn-b" onclick="quitGame()" style="margin-bottom:4px;">&#10003; きろくしておわる</button>
+    <button class="btn" onclick="clearRanking()" style="background:#eee;color:#888;box-shadow:none;font-size:13px;margin-bottom:4px;">&#128465; きろくをけす</button>
+    <button class="btn" onclick="goTitle()" style="background:rgba(255,255,255,0.6);color:#555;box-shadow:none;font-size:13px;">&#8592; タイトルへもどる</button>
+  <div class="footer-cr">© #87</div>
   </div>
 </div>
-<div id="hint" style="visibility:hidden;">👆 長押ししながら指をずらして向きを決め、離すと発射！つぼみの色で実の種類が決まるよ</div>
+<div id="gameButtons" style="display:none; margin-top:4px; width:100%; max-width:335px; gap:8px;">
+  <button onclick="togglePause()" id="pauseBtn" style="flex:1; padding:8px 0; font-family:inherit; font-size:13px; border:none; border-radius:18px; cursor:pointer; font-weight:bold; background:#78909C; color:#fff; box-shadow:0 3px 0 #37474F;">⏸ いちじていし</button>
+  <button onclick="goTitle()" style="flex:1; padding:8px 0; font-family:inherit; font-size:13px; border:none; border-radius:18px; cursor:pointer; font-weight:bold; background:#A5D6A7; color:#1B5E20; box-shadow:0 3px 0 #388E3C;">🏠 タイトルへ</button>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
 
@@ -326,25 +351,27 @@ function drawFruitAt(c, x, y, r, fi) {
 
 
 var STAGES_EASY = [
-  { t:'Stage 1', h:'赤い実を１つ作ろう！',       m:[{fi:0,n:1}] },
-  { t:'Stage 2', h:'赤い実を２つ作ろう！',        m:[{fi:0,n:2}] },
-  { t:'Stage 3', h:'橙の実を２つ作ろう！',        m:[{fi:1,n:2}] },
-  { t:'Stage 4', h:'黄の実を３つ作ろう！',        m:[{fi:2,n:3}] },
-  { t:'Stage 5', h:'赤×２・橙×２！',             m:[{fi:0,n:2},{fi:1,n:2}] },
-  { t:'Stage 6', h:'なんでも実を５つ作ろう！',    m:[{fi:-1,n:5}] },
-  { t:'Stage 7', h:'赤・橙・黄 各２つずつ！',    m:[{fi:0,n:2},{fi:1,n:2},{fi:2,n:2}] },
-  { t:'Stage 8', h:'全６種類の実を作ろう！',      m:[{fi:0,n:1},{fi:1,n:1},{fi:2,n:1},{fi:3,n:1},{fi:4,n:1},{fi:5,n:1}] }
+  { t:'Stage 1', h:t('赤い実を１つ作ろう！','あかいみを１つつくろう！'),       m:[{fi:0,n:1}] },
+  { t:'Stage 2', h:t('赤い実を２つ作ろう！','あかいみを２つつくろう！'),        m:[{fi:0,n:2}] },
+  { t:'Stage 3', h:t('橙の実を２つ作ろう！','オレンジのみを２つつくろう！'),        m:[{fi:1,n:2}] },
+  { t:'Stage 4', h:t('黄の実を３つ作ろう！','きいろのみを３つつくろう！'),        m:[{fi:2,n:3}] },
+  { t:'Stage 5', h:t('赤×２・橙×２！','あか×２・オレンジ×２！'),             m:[{fi:0,n:2},{fi:1,n:2}] },
+  { t:'Stage 6', h:t('なんでも実を５つ作ろう！','なんでもみを５つつくろう！'),    m:[{fi:-1,n:5}] },
+  { t:'Stage 7', h:t('赤・橙・黄 各２つずつ！','あか・オレンジ・きいろ 各２つずつ！'),    m:[{fi:0,n:2},{fi:1,n:2},{fi:2,n:2}] },
+  { t:'Stage 8', h:t('全６種類の実を作ろう！','ぜんぶの色のみをつくろう！'),      m:[{fi:0,n:1},{fi:1,n:1},{fi:2,n:1},{fi:3,n:1},{fi:4,n:1},{fi:5,n:1}] }
 ];
 var STAGES_HARD = [
-  { t:'Stage 1', h:'赤い実を１つ！🐛虫に注意',    m:[{fi:0,n:1}] },
-  { t:'Stage 2', h:'赤・橙を各１つ！🐛',          m:[{fi:0,n:1},{fi:1,n:1}] },
-  { t:'Stage 3', h:'黄の実を２つ！🐛',            m:[{fi:2,n:2}] },
-  { t:'Stage 4', h:'赤・橙・黄 各１つ！🐛',       m:[{fi:0,n:1},{fi:1,n:1},{fi:2,n:1}] },
-  { t:'Stage 5', h:'なんでも実を４つ！🐛🐛',      m:[{fi:-1,n:4}] },
-  { t:'Stage 6', h:'赤・橙・黄 各２つ！🐛🐛',    m:[{fi:0,n:2},{fi:1,n:2},{fi:2,n:2}] },
-  { t:'Stage 7', h:'全６種類！🐛🐛🐛',            m:[{fi:0,n:1},{fi:1,n:1},{fi:2,n:1},{fi:3,n:1},{fi:4,n:1},{fi:5,n:1}] }
+  { t:'Stage 1', h:t('赤い実を１つ！🐞てんとう虫に注意','あかいみを１つ！🐞てんとうむしにちゅうい'),    m:[{fi:0,n:1}] },
+  { t:'Stage 2', h:t('赤・橙を各１つ！🐞','あか・オレンジを各１つ！🐞'),          m:[{fi:0,n:1},{fi:1,n:1}] },
+  { t:'Stage 3', h:t('黄の実を２つ！🐞','きいろのみを２つ！🐞'),            m:[{fi:2,n:2}] },
+  { t:'Stage 4', h:t('赤・橙・黄 各１つ！🐞','あか・オレンジ・きいろ 各１つ！🐞'),       m:[{fi:0,n:1},{fi:1,n:1},{fi:2,n:1}] },
+  { t:'Stage 5', h:t('なんでも実を４つ！🐞🐞','なんでもみを４つ！🐞🐞'),      m:[{fi:-1,n:4}] },
+  { t:'Stage 6', h:t('赤・橙・黄 各２つ！🐞🐞','あか・オレンジ・きいろ 各２つ！🐞🐞'),    m:[{fi:0,n:2},{fi:1,n:2},{fi:2,n:2}] },
+  { t:'Stage 7', h:t('全６種類！🐞🐞🐞','ぜんぶのいろ！🐞🐞🐞'),            m:[{fi:0,n:1},{fi:1,n:1},{fi:2,n:1},{fi:3,n:1},{fi:4,n:1},{fi:5,n:1}] }
 ];
 var gameMode = 'easy';
+var endlessMode = false;
+var endlessHard = false;
 var STAGES = STAGES_EASY;
 
 var shootBag = [];
@@ -441,6 +468,8 @@ function initStage() {
     branchBodies.push(bb);
   });
 
+  paused = false;
+  var pb = document.getElementById('pauseBtn'); if(pb){pb.textContent='⏸ いちじていし'; pb.style.background='#78909C'; pb.style.boxShadow='0 3px 0 #37474F';}
   frame = 0; dead = false; won = false; clearPending = false;
   aim = -Math.PI/2; birdJoy = 0;
   mProg = {}; anyFruit = 0; shootBag = [];
@@ -452,7 +481,8 @@ function initStage() {
   }
   curLvl = popSeq(); nxtLvl = popSeq();
 
-  document.getElementById('stageLabel').textContent = s.t.toUpperCase();
+  var modeTag = endlessMode ? ' ♾️' : '';
+  document.getElementById('stageLabel').textContent = s.t.toUpperCase() + modeTag;
   document.getElementById('sc').textContent = totalSc;
   document.getElementById('clrOv').classList.remove('show');
   document.getElementById('goOv').classList.remove('show');
@@ -476,23 +506,193 @@ function initStage() {
   });
 }
 
+// エンドレスモード用ステージ自動生成
+function generateEndlessStage(idx, isHard) {
+  var fi = FRUITS;
+  // 難易度に応じてミッション構成を変える
+  var missions = [];
+  if (idx < 3) {
+    missions = [{fi:0, n:1}];
+  } else if (idx < 6) {
+    missions = [{fi: idx%6, n: Math.min(2, 1 + Math.floor(idx/4))}];
+  } else if (idx < 10) {
+    missions = [{fi: idx%6, n:2}, {fi:(idx+2)%6, n:1}];
+  } else if (idx < 15) {
+    missions = [{fi: idx%6, n:2}, {fi:(idx+2)%6, n:2}];
+  } else {
+    var count = Math.min(6, 2 + Math.floor((idx-10)/5));
+    missions = [];
+    for (var i = 0; i < count; i++) missions.push({fi:i, n: Math.min(3, 1+Math.floor(idx/10))});
+  }
+  var bugStr = '';
+  if (isHard) {
+    var bugs = Math.min(4, Math.floor(idx/3)+1);
+    for (var b=0;b<bugs;b++) bugStr += '🐞';
+  }
+  return {
+    t: 'Stage ' + (idx+1),
+    h: (idx < 3 ? '実を作ろう！' : idx < 8 ? 'コンボを狙え！' : idx < 15 ? '難しくなってきた！' : '上級者向け！') + (bugStr ? ' ' + bugStr : ''),
+    m: missions,
+    endless: true
+  };
+}
+
 window.startGame = function(mode) {
+  addStat('play_' + mode);
+  updateStreak();
   gameMode = mode;
-  STAGES = mode === 'hard' ? STAGES_HARD : STAGES_EASY;
+  var isEndless = mode === 'endless_easy' || mode === 'endless_hard';
+  var isHard = mode === 'hard' || mode === 'endless_hard';
+  endlessMode = isEndless;
+  endlessHard = isHard;
+  STAGES = isHard ? STAGES_HARD : STAGES_EASY;
   totalSc = 0; stageIdx = 0;
   document.getElementById('titleOv').classList.remove('show');
-  document.getElementById('hint').style.visibility = 'visible';
+  document.getElementById('gameButtons').style.display = 'flex';
   document.getElementById('topUI').style.display = 'flex';
   initStage();
 };
-window.restartAll   = function() { totalSc = 0; stageIdx = 0; hideAllOv(); document.getElementById('hint').style.visibility = 'visible'; initStage(); };
-window.nextStage    = function() { stageIdx = Math.min(stageIdx+1, STAGES.length-1); hideAllOv(); document.getElementById('hint').style.visibility = 'visible'; initStage(); };
-window.continueStage = function() { hideAllOv(); document.getElementById('hint').style.visibility = 'visible'; initStage(); };
+window.restartAll   = function() { totalSc = 0; stageIdx = 0; if(endlessMode){ STAGES = endlessHard ? STAGES_HARD.slice() : STAGES_EASY.slice(); } hideAllOv(); document.getElementById('gameButtons').style.display = 'flex'; initStage(); };
+window.nextStage    = function() {
+  stageIdx++;
+  if (endlessMode) {
+    // エンドレス：定義済みステージを超えたら自動生成
+    if (stageIdx >= STAGES.length) {
+      STAGES = STAGES.concat([generateEndlessStage(stageIdx, endlessHard)]);
+    }
+  } else {
+    stageIdx = Math.min(stageIdx, STAGES.length-1);
+  }
+  hideAllOv(); document.getElementById('gameButtons').style.display = 'flex'; initStage();
+};
+window.continueStage = function() { hideAllOv(); document.getElementById('gameButtons').style.display = 'flex'; initStage(); };
+
+// ======================================================
+// SOUND EFFECTS (Web Audio API)
+// ======================================================
+var audioCtx = null;
+var seEnabled = true;
+
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function playShoot() {
+  if (!seEnabled) return;
+  var ctx = getAudioCtx();
+  var osc = ctx.createOscillator();
+  var gain = ctx.createGain();
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(520, ctx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(180, ctx.currentTime + 0.18);
+  gain.gain.setValueAtTime(0.18, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.18);
+  osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.18);
+}
+
+function playEvolve() {
+  if (!seEnabled) return;
+  var ctx = getAudioCtx();
+  [0, 0.06, 0.12].forEach(function(t, i) {
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type = 'sine';
+    var freq = [320, 480, 640][i];
+    osc.frequency.setValueAtTime(freq, ctx.currentTime + t);
+    osc.frequency.exponentialRampToValueAtTime(freq * 1.5, ctx.currentTime + t + 0.12);
+    gain.gain.setValueAtTime(0.12, ctx.currentTime + t);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + 0.18);
+    osc.start(ctx.currentTime + t); osc.stop(ctx.currentTime + t + 0.2);
+  });
+}
+
+function playFruit() {
+  if (!seEnabled) return;
+  var ctx = getAudioCtx();
+  var notes = [523, 659, 784, 1047];
+  notes.forEach(function(freq, i) {
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.08);
+    gain.gain.setValueAtTime(0.15, ctx.currentTime + i * 0.08);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.08 + 0.3);
+    osc.start(ctx.currentTime + i * 0.08);
+    osc.stop(ctx.currentTime + i * 0.08 + 0.32);
+  });
+}
+
+function playBug() {
+  if (!seEnabled) return;
+  var ctx = getAudioCtx();
+  var buf = ctx.createBuffer(1, ctx.sampleRate * 0.18, ctx.sampleRate);
+  var data = buf.getChannelData(0);
+  for (var i = 0; i < data.length; i++) {
+    data[i] = (Math.random() * 2 - 1) * (1 - i / data.length) * 0.6;
+  }
+  var src = ctx.createBufferSource();
+  var gain = ctx.createGain();
+  var filter = ctx.createBiquadFilter();
+  filter.type = 'bandpass'; filter.frequency.value = 400; filter.Q.value = 1.5;
+  src.buffer = buf;
+  src.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+  gain.gain.setValueAtTime(0.5, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.18);
+  src.start(ctx.currentTime); src.stop(ctx.currentTime + 0.2);
+}
+
+function playClear() {
+  if (!seEnabled) return;
+  var ctx = getAudioCtx();
+  var melody = [
+    {f:523, t:0},    {f:659, t:0.12}, {f:784, t:0.24},
+    {f:1047,t:0.36}, {f:784, t:0.50}, {f:1047,t:0.60}
+  ];
+  melody.forEach(function(n) {
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(n.f, ctx.currentTime + n.t);
+    gain.gain.setValueAtTime(0.1, ctx.currentTime + n.t);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + n.t + 0.22);
+    osc.start(ctx.currentTime + n.t);
+    osc.stop(ctx.currentTime + n.t + 0.24);
+  });
+}
+
+window.toggleSE = function() {
+  seEnabled = !seEnabled;
+  var btn = document.getElementById('seToggleBtn');
+  if (btn) btn.textContent = seEnabled ? '🔊 こうかおん：ON' : '🔇 こうかおん：OFF';
+};
+
+var paused = false;
+window.togglePause = function() {
+  if (dead || won) return;
+  paused = !paused;
+  var btn = document.getElementById('pauseBtn');
+  if (paused) {
+    btn.textContent = '▶ さいかい';
+    btn.style.background = '#66BB6A';
+    btn.style.boxShadow = '0 3px 0 #2E7D32';
+  } else {
+    btn.textContent = '⏸ いちじていし';
+    btn.style.background = '#78909C';
+    btn.style.boxShadow = '0 3px 0 #37474F';
+  }
+};
+
 window.goTitle = function() {
+  paused = false;
   hideAllOv();
   if (eng) { try { Matter.World.clear(world, false); Matter.Engine.clear(eng); } catch(e){} eng = null; }
   document.getElementById('topUI').style.display = 'none';
-  document.getElementById('hint').style.visibility = 'hidden';
+  document.getElementById('gameButtons').style.display = 'none';
   document.getElementById('titleOv').classList.add('show');
   drawTitleIllustration(); // 再描画
 };
@@ -505,6 +705,33 @@ function hideAllOv() {
 
 // ── ランキング ─────────────────────────────────────
 var RANK_KEY = 'minoriRanking';
+var LANG_KEY  = 'torinoki_lang';
+var STREAK_KEY= 'torinoki_streak';
+var lang = 'kana';
+
+function t(kanji, kana) { return lang === 'kanji' ? kanji : kana; }
+function loadLang() {
+  try { var v = localStorage.getItem(LANG_KEY); if (v) lang = v; } catch(e) {}
+}
+function saveLang(v) {
+  lang = v;
+  try { localStorage.setItem(LANG_KEY, v); } catch(e) {}
+}
+function updateStreak() {
+  try {
+    var s = JSON.parse(localStorage.getItem(STREAK_KEY) || '{}');
+    var today = new Date().toDateString();
+    if (s.last === today) return;
+    var yesterday = new Date(Date.now() - 86400000).toDateString();
+    s.cur = (s.last === yesterday) ? (s.cur||1)+1 : 1;
+    s.max = Math.max(s.max||0, s.cur);
+    s.last = today; s.days = (s.days||0)+1;
+    localStorage.setItem(STREAK_KEY, JSON.stringify(s));
+  } catch(e) {}
+}
+function getStreak() {
+  try { return JSON.parse(localStorage.getItem(STREAK_KEY)||'{}'); } catch(e) { return {}; }
+}
 function loadRanking() {
   try { return JSON.parse(localStorage.getItem(RANK_KEY) || '[]'); } catch(e) { return []; }
 }
@@ -516,6 +743,150 @@ function saveScore(sc, stage) {
   try { localStorage.setItem(RANK_KEY, JSON.stringify(list)); } catch(e) {}
   return list;
 }
+
+
+window.selectLang = function(v) {
+  saveLang(v);
+  applyLang();
+  hideAllOv();
+  document.getElementById('titleOv').classList.add('show');
+};
+
+window.showLangSetting = function() {
+  // 簡易ダイアログ風：言語選択オーバーレイを再表示
+  hideAllOv();
+  document.getElementById('langOv').classList.add('show');
+};
+
+function applyLang() {
+  var els = {
+    'zukanBtn':    [t('📖 図鑑','📖 ずかん')],
+    'clrNextBtn':  [t('次のステージへ 🌿','つぎのステージへ 🌿')],
+    'clrRetryBtn': [t('もう一度このステージ','もう一どこのステージ')],
+    'clrTitleBtn': [t('タイトルへ戻る','タイトルへもどる')],
+    'goRetryBtn':  [t('もう一度プレイ','もう一どプレイ')],
+    'goTitleBtn':  [t('タイトルへ戻る','タイトルへもどる')],
+  };
+  Object.keys(els).forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = els[id][0];
+  });
+}
+
+window.showZukan = function() {
+  var stats = loadStats();
+  var streak = getStreak();
+  var curStreak = streak.cur || 0;
+  var maxStreak = streak.max || 0;
+  var totalDays  = streak.days || 0;
+
+  var fruits = [
+    {name:t('赤い実','あかいみ'),     emoji:'🍎', key:'fruit_0'},
+    {name:t('橙の実','オレンジのみ'), emoji:'🍊', key:'fruit_1'},
+    {name:t('黄の実','きいろのみ'),   emoji:'🍋', key:'fruit_2'},
+    {name:t('紫の実','むらさきのみ'), emoji:'🍇', key:'fruit_3'},
+    {name:t('青い実','あおいみ'),     emoji:'🫐', key:'fruit_4'},
+    {name:t('緑の実','みどりのみ'),   emoji:'🍏', key:'fruit_5'},
+  ];
+
+  var play_easy   = (stats['play_easy']||0) + (stats['play_endless_easy']||0);
+  var play_hard   = (stats['play_hard']||0) + (stats['play_endless_hard']||0);
+  var play_total  = play_easy + play_hard;
+  var total_fruits= stats['fruit_total']||0;
+  var endless_fruits = stats['endless_fruit']||0;
+  var bug_eaten   = stats['bug_eaten']||0;
+  var stage_clear = stats['stage_clear']||0;
+
+  function row(emoji, label, val, unit) {
+    return '<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:#fff;border-radius:12px;margin-bottom:6px;">' +
+      '<span style="font-size:24px;min-width:32px;text-align:center;">' + emoji + '</span>' +
+      '<div style="flex:1;font-size:13px;font-weight:bold;color:#333;">' + label + '</div>' +
+      '<div style="font-size:18px;font-weight:bold;color:#E65100;">' + val +
+        '<span style="font-size:11px;color:#888;font-weight:normal;"> '+unit+'</span></div>' +
+      '</div>';
+  }
+
+  function section(title) {
+    return '<div style="font-size:12px;font-weight:bold;color:#555;margin:12px 0 4px;letter-spacing:1px;">'+title+'</div>';
+  }
+
+  var html = '<div style="font-size:12px;color:#888;margin-bottom:8px;text-align:center;">' +
+    t('自分の記録（この端末に保存）','じぶんのきろく（このきしゅに保存）') + '</div>';
+
+  html += section(t('🎮 プレイ記録','🎮 プレイきろく'));
+  html += row('🎮', t('イージーでプレイ','イージーでプレイ'), play_easy, t('回','かい'));
+  html += row('💪', t('ハードでプレイ','ハードでプレイ'), play_hard, t('回','かい'));
+  html += row('🏆', t('ステージクリア','ステージクリア'), stage_clear, t('回','かい'));
+  html += row('🔥', t('連続プレイ中','れんぞくプレイちゅう'), curStreak, t('日','にち'));
+  html += row('📅', t('最長連続プレイ','さいちょうれんぞく'), maxStreak, t('日','にち'));
+  html += row('📆', t('総プレイ日数','そうプレイにっすう'), totalDays, t('日','にち'));
+
+  html += section(t('🍎 実を作った数','🍎 みをつくったかず'));
+  fruits.forEach(function(f) {
+    html += row(f.emoji, f.name, stats[f.key]||0, t('個','こ'));
+  });
+  html += row('🌟', t('合計','ごうけい'), total_fruits, t('個','こ'));
+  html += row('♾️', t('エンドレスで作った実','エンドレスでつくったみ'), endless_fruits, t('個','こ'));
+
+  html += section(t('🐞 てんとう虫記録','🐞 てんとうむしきろく'));
+  html += row('🐞', t('かじられた回数','かじられたかず'), bug_eaten, t('回','かい'));
+
+  // バッジ定義
+  var BADGES = [
+    // プレイ回数
+    {emoji:'🌱', name:t('はじめてプレイ！','はじめてプレイ！'), ok: play_total >= 1},
+    {emoji:'🎮', name:t('10回プレイ','10かいプレイ'),           ok: play_total >= 10},
+    {emoji:'🎯', name:t('30回プレイ','30かいプレイ'),           ok: play_total >= 30},
+    {emoji:'👑', name:t('100回プレイ','100かいプレイ'),         ok: play_total >= 100},
+    // 連続プレイ
+    {emoji:'🔥', name:t('3日連続','3にちれんぞく'),             ok: maxStreak >= 3},
+    {emoji:'⚡', name:t('7日連続','7にちれんぞく'),             ok: maxStreak >= 7},
+    {emoji:'🌈', name:t('30日連続','30にちれんぞく'),           ok: maxStreak >= 30},
+    // 実の数
+    {emoji:'🍒', name:t('実を10個','みを10こ'),                 ok: total_fruits >= 10},
+    {emoji:'🍎', name:t('実を50個','みを50こ'),                 ok: total_fruits >= 50},
+    {emoji:'🌳', name:t('実を100個','みを100こ'),               ok: total_fruits >= 100},
+    // ステージクリア
+    {emoji:'⭐', name:t('はじめてクリア','はじめてクリア'),     ok: (stats['clear_stage_1']||0) >= 1},
+    {emoji:'🌟', name:t('Stage3クリア','Stage3クリア'),         ok: (stats['clear_stage_3']||0) >= 1},
+    {emoji:'💫', name:t('Stage5クリア','Stage5クリア'),         ok: (stats['clear_stage_5']||0) >= 1},
+    {emoji:'🏆', name:t('Stage7クリア！','Stage7クリア！'),     ok: (stats['clear_stage_7']||0) >= 1},
+    {emoji:'🎖️', name:t('10回クリア','10かいクリア'),           ok: stage_clear >= 10},
+    // エンドレス
+    {emoji:'♾️', name:t('エンドレス10個','エンドレス10こ'),    ok: endless_fruits >= 10},
+    {emoji:'🚀', name:t('エンドレス30個','エンドレス30こ'),    ok: endless_fruits >= 30},
+    {emoji:'🌌', name:t('エンドレス100個','エンドレス100こ'),  ok: endless_fruits >= 100},
+    // てんとう虫
+    {emoji:'🐛', name:t('かじられた…','かじられた…'),           ok: bug_eaten >= 1},
+    {emoji:'🐞', name:t('5回かじられた','5かいかじられた'),     ok: bug_eaten >= 5},
+  ];
+
+  var achieved = BADGES.filter(function(b){return b.ok;}).length;
+  html += section('🏅 ' + t('バッジ','バッジ') + ' (' + achieved + '/' + BADGES.length + ')');
+  html += '<div style="display:flex;flex-wrap:wrap;gap:8px;padding:4px 0;">';
+  BADGES.forEach(function(b) {
+    var op = b.ok ? '1' : '0.15';
+    var filter = b.ok ? '' : 'filter:grayscale(1) brightness(0.4);';
+    html += '<div style="display:flex;flex-direction:column;align-items:center;gap:2px;opacity:'+op+';'+filter+
+      'background:#fff;border-radius:14px;padding:8px 6px;min-width:68px;box-shadow:0 1px 4px rgba(0,0,0,0.08);">' +
+      '<span style="font-size:28px;">' + b.emoji + '</span>' +
+      '<span style="font-size:10px;text-align:center;color:#555;line-height:1.3;">' + b.name + '</span>' +
+      '</div>';
+  });
+  html += '</div>';
+
+  document.getElementById('zukanContent').innerHTML = html;
+  hideAllOv();
+  document.getElementById('zukanOv').classList.add('show');
+};
+
+window.resetStats = function() {
+  if (confirm('きろくをぜんぶけしますか？')) {
+    try { localStorage.removeItem(STATS_KEY); } catch(e) {}
+    window.showZukan();
+  }
+};
+
 window.showRanking = function() {
   var list = saveScore(totalSc, stageIdx + 1);
   var medals = ['🥇','🥈','🥉','4','5','6','7','8','9','10'];
@@ -534,8 +905,9 @@ window.showRanking = function() {
     });
   }
   hideAllOv();
+  applyLang();
   document.getElementById('rankOv').classList.add('show');
-  document.getElementById('hint').style.visibility = 'hidden';
+  document.getElementById('gameButtons').style.display = 'none';
 };
 window.clearRanking = function() {
   if (confirm('記録を全て消しますか？')) {
@@ -574,6 +946,8 @@ function shoot() {
     restitution:0.05, friction:0.4, frictionAir:0.022, density:0.003, label:'b'
   });
   Bo.setVelocity(b, { x: Math.cos(aim)*10, y: Math.sin(aim)*10 });
+  playShoot();
+  addStat('shots');
   Wo.add(world, b);
   bullet = { body:b, lvl:curLvl, fi:null, born:frame };
   curLvl = nxtLvl; nxtLvl = popSeq();
@@ -639,6 +1013,10 @@ function procMQ() {
       var fi = (a.fi !== null) ? a.fi : 0;
       var matches = missionNeeds(fi);
       spawnFruitDisplay(mx, my, fi, matches);
+      playFruit();
+      addStat('fruit_' + fi);
+      addStat('fruit_total');
+      if (endlessMode) addStat('endless_fruit');
       addPts(mx, my,
         matches ? 300 + stageIdx*100 : 500 + stageIdx*150,
         matches ? '#E65100' : '#9C27B0'
@@ -646,6 +1024,7 @@ function procMQ() {
       birdJoy = 240; // 約4秒間お祝い
     } else {
       burstGrow(mx, my, nl);
+      playEvolve();
       addPts(mx, my, [0,5,10,20,40,80,160][nl] || 0, '#4CAF50');
       var nr = ITEMS[nl].r;
       var nb = Bd.circle(
@@ -741,7 +1120,7 @@ function triggerGO() {
   document.getElementById('goSc').textContent = totalSc;
   setTimeout(function() {
     document.getElementById('goOv').classList.add('show');
-    document.getElementById('hint').style.visibility = 'hidden';
+    document.getElementById('gameButtons').style.display = 'none';
   }, 500);
 }
 
@@ -916,24 +1295,16 @@ function drawBird() {
   [-10,-4,4,10].forEach(function(tx2) {
     CTX.beginPath(); CTX.moveTo(tx2,10); CTX.lineTo(tx2+5,24); CTX.lineTo(tx2-5,24); CTX.closePath(); CTX.fill();
   });
-  var wg = CTX.createRadialGradient(-24, 0, 2, -20, 2, 16);
-  wg.addColorStop(0, '#FFE082'); wg.addColorStop(1, '#FF8F00');
-  CTX.shadowColor = 'rgba(0,0,0,0.18)'; CTX.shadowBlur = 6;
   CTX.beginPath(); CTX.ellipse(-22, 1, 14, 9, -0.3, 0, Math.PI*2);
-  CTX.fillStyle = wg; CTX.fill(); CTX.shadowBlur = 0;
-  CTX.lineWidth = 1; CTX.strokeStyle = 'rgba(255,255,255,0.3)'; CTX.stroke();
+  CTX.fillStyle = '#FFB300'; CTX.fill();
   CTX.strokeStyle = '#E65100'; CTX.lineWidth = 1.2; CTX.lineCap = 'round';
   CTX.beginPath(); CTX.moveTo(-33,1); CTX.lineTo(-36,7);  CTX.stroke();
   CTX.beginPath(); CTX.moveTo(-33,3); CTX.lineTo(-37,9);  CTX.stroke();
   CTX.beginPath(); CTX.moveTo(-32,5); CTX.lineTo(-35,11); CTX.stroke();
-  var bg = CTX.createRadialGradient(-8, -2, 4, 0, 3, 28);
-  bg.addColorStop(0, '#FFE082'); bg.addColorStop(1, '#FF8F00');
-  CTX.shadowColor = 'rgba(0,0,0,0.25)'; CTX.shadowBlur = 12;
   CTX.beginPath(); CTX.ellipse(0, 2, 26, 22, 0, 0, Math.PI*2);
-  CTX.fillStyle = bg; CTX.fill(); CTX.shadowBlur = 0;
-  CTX.lineWidth = 1.5; CTX.strokeStyle = 'rgba(255,255,255,0.35)'; CTX.stroke();
+  CTX.fillStyle = '#FFB300'; CTX.fill();
   CTX.beginPath(); CTX.ellipse(3, 7, 14, 10, 0, 0, Math.PI*2);
-  CTX.fillStyle = '#FFF9C4'; CTX.globalAlpha = 0.65; CTX.fill(); CTX.globalAlpha = 1;
+  CTX.fillStyle = '#FFE082'; CTX.fill();
   if (birdJoy > 25) {
     CTX.save(); CTX.globalAlpha = Math.min(1, (birdJoy-25)/40);
     CTX.fillStyle = '#FFF176';
@@ -947,12 +1318,8 @@ function drawBird() {
   CTX.fillStyle = '#FFB300';
   CTX.beginPath();
   CTX.ellipse(HX - 4, HY + 12, 8, 10, 0.3, 0, Math.PI*2); CTX.fill();
-  var hg = CTX.createRadialGradient(HX-6, HY-6, 2, HX, HY, 20);
-  hg.addColorStop(0, '#FFFDE7'); hg.addColorStop(0.55, '#FFE082'); hg.addColorStop(1, '#FFB300');
-  CTX.shadowColor = 'rgba(0,0,0,0.22)'; CTX.shadowBlur = 8;
   CTX.beginPath(); CTX.arc(HX, HY, 20, 0, Math.PI*2);
-  CTX.fillStyle = hg; CTX.fill(); CTX.shadowBlur = 0;
-  CTX.lineWidth = 1.5; CTX.strokeStyle = 'rgba(255,255,255,0.4)'; CTX.stroke();
+  CTX.fillStyle = '#FFB300'; CTX.fill();
   CTX.strokeStyle = '#E65100'; CTX.lineWidth = 3; CTX.lineCap = 'round';
   CTX.beginPath(); CTX.moveTo(HX-2, HY-18); CTX.quadraticCurveTo(HX-8, HY-28, HX-4, HY-34); CTX.stroke();
   CTX.beginPath(); CTX.moveTo(HX+3, HY-19); CTX.quadraticCurveTo(HX+3, HY-30, HX+2, HY-36); CTX.stroke();
@@ -961,9 +1328,8 @@ function drawBird() {
   CTX.beginPath(); CTX.arc(HX-4, HY-34, 3.5, 0, Math.PI*2); CTX.fill();
   CTX.beginPath(); CTX.arc(HX+2,  HY-36, 3.5, 0, Math.PI*2); CTX.fill();
   CTX.beginPath(); CTX.arc(HX+10, HY-32, 3.5, 0, Math.PI*2); CTX.fill();
-  CTX.shadowColor = 'rgba(0,0,0,0.15)'; CTX.shadowBlur = 3;
   CTX.beginPath(); CTX.ellipse(HX+6, HY-4, 8, 9, 0.15, 0, Math.PI*2);
-  CTX.fillStyle = '#fff'; CTX.fill(); CTX.shadowBlur = 0;
+  CTX.fillStyle = '#fff'; CTX.fill();
   CTX.lineWidth = 0.8; CTX.strokeStyle = '#DDD'; CTX.stroke();
   CTX.beginPath(); CTX.ellipse(HX+8, HY-5, 5.5, 6.5, 0.15, 0, Math.PI*2);
   CTX.fillStyle = '#1A237E'; CTX.fill();
@@ -980,7 +1346,6 @@ function drawBird() {
   var hasItem = !bullet;
   var beakOpen = hasItem ? 6 : 2;
   CTX.fillStyle = '#FF8F00';
-  CTX.shadowColor = 'rgba(100,40,0,0.3)'; CTX.shadowBlur = 3;
   CTX.beginPath();
   CTX.moveTo(HX+16, HY-2);
   CTX.lineTo(HX+16, HY-2 - beakOpen*0.4);
@@ -1016,7 +1381,7 @@ function drawAim() {
   CTX.textAlign = 'center';
   CTX.fillStyle = 'rgba(255,255,255,0.85)';
   CTX.shadowColor = 'rgba(0,120,0,0.5)'; CTX.shadowBlur = 4;
-  CTX.fillText('👆 長押しして指をずらすと向きが変わるよ。離すと発射！', CW/2, BIRD_Y - 42);
+  CTX.fillText('👆 タップしてゆびをうごかすとむきがかわるよ。はなすとはっしゃ！', CW/2, BIRD_Y - 42);
   CTX.shadowBlur = 0;
   var steps = 40;
   var stepLen = 6;
@@ -1215,8 +1580,8 @@ function update() {
   // ── おじゃま虫（ハードモードのみ）──
   if (gameMode === 'hard' && !dead && !won) {
     bugTimer++;
-    // 出現間隔: stage1=3分(10800f), stage7=2分(7200f)、ランダム±20%
-    var spawnInterval = Math.max(7200, 10800 - stageIdx * 480);
+    // 出現間隔: stage1=60秒(3600f), stage7=30秒(1800f)、ランダム±20%
+    var spawnInterval = Math.max(900, 2400 - stageIdx * 200);
     spawnInterval = spawnInterval * (0.8 + Math.random() * 0.4);
     if (bugTimer >= spawnInterval && objs.length > 0) {
       bugTimer = 0;
@@ -1246,6 +1611,8 @@ function update() {
         bug.eating++;
         if (bug.eating > 60 && !bug.eaten) {
           bug.eaten = true;
+          playBug();
+          addStat('bug_eaten');
           // アイテムを消す
           Wo.remove(world, bug.target.body);
           objs = objs.filter(function(o){ return o !== bug.target; });
@@ -1263,9 +1630,12 @@ function update() {
   // タップ済み＆連鎖完了したら結果画面を表示
   if (clearPending && mq.length === 0 && fruitDisplays.every(function(fd){ return fd.counted; })) {
     clearPending = false;
+    playClear();
+    addStat('stage_clear');
+    addStat('clear_stage_' + (stageIdx+1));
     document.getElementById('clrSc').textContent = totalSc;
     document.getElementById('clrOv').classList.add('show');
-    document.getElementById('hint').style.visibility = 'hidden';
+    document.getElementById('gameButtons').style.display = 'none';
   }
 
   // ★近接合体チェック（Matter.jsの衝突検出が漏れた場合の補完）
@@ -1422,7 +1792,7 @@ loop();
 
 }());
 
-// タイトルイラスト描画（起動時＋タイトルへ戻る時に呼ぶ）
+// タイトルイラスト描画（起動時＋タイトルへもどる時に呼ぶ）
 function drawTitleIllustration() {
   var tc = document.getElementById('titleCanvas');
   if (!tc) return;
@@ -1587,5 +1957,6 @@ function drawTitleIllustration() {
 drawTitleIllustration(); // 起動時に描画
 </script>
 
+<div class="footer-cr">© #87</div>
 </body>
 </html>
